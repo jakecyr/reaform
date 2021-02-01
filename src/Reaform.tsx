@@ -73,7 +73,7 @@ export const Reaform = <I extends Record<string, any>>({
     setValues(newValues);
 
     if (validate) {
-      const validationResponse = validate(newValues) || {};
+      const validationResponse = validate(newValues) || ({} as Record<keyof I, string | undefined>);
       setValidation(validationResponse);
 
       const isValid = Object.values(validationResponse).every(

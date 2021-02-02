@@ -1,6 +1,7 @@
 import React from 'react';
 import { Reaform } from './Reaform';
 import { ReaformError } from './ReaformError';
+import ReaformSchema from './ReaformSchema';
 import { useReaformRef } from './useReaformRef';
 
 const initialValues = { name: 'Jake', age: 20 };
@@ -8,29 +9,16 @@ const initialValues = { name: 'Jake', age: 20 };
 function App() {
   const [ref, setRef] = useReaformRef<typeof initialValues>();
 
-  const validate = (
-    values: Record<keyof typeof initialValues, any>,
-  ): Record<keyof typeof initialValues, string | undefined> => {
-    const errors = {} as Record<keyof typeof initialValues, string | undefined>;
-
-    if (!values.name) {
-      errors.name = 'Required';
-    }
-
-    if (!values.age) {
-      errors.age = 'Required';
-    } else if (values.age && !/^[0-9]+$/.test(values.age)) {
-      errors.age = 'Invalid number';
-    }
-
-    return errors;
-  };
+  const schema = ReaformSchema.object().shape({
+    name: ReaformSchema.string().required(),
+    age: ReaformSchema.number().required().positive().integer(),
+  });
 
   return (
     <Reaform
       getRef={(ref) => setRef(ref)}
       initial={initialValues}
-      validate={validate}
+      validationSchema={schema}
       onSubmit={(values) => console.log('submitted', values)}
     >
       <div>

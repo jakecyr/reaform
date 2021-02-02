@@ -1,5 +1,6 @@
 import React from 'react';
-import { Ref } from "./Ref";
+import yup from './ReaformSchema';
+import { Ref } from './Ref';
 
 export interface ReaformProps<I extends Record<string, any>> extends React.PropsWithChildren<any> {
   initial: I;
@@ -7,4 +8,5 @@ export interface ReaformProps<I extends Record<string, any>> extends React.Props
   children: React.ReactNode;
   getRef?: (ref: Ref<I>) => any;
   validate?: (values: Record<keyof I, any>) => Record<keyof I, string | undefined>;
+  validationSchema?: yup.ObjectSchema<Record<keyof I, any>>;
 }

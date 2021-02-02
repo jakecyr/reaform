@@ -6,3 +6,5 @@ src/index.tsx
 dist/App.tsx
 dist/index.tsx
 .eslintcache
+dist/index.css
+reportWebVitals.ts

@@ -6,6 +6,7 @@ export const Reaform = <I extends Record<string, any>>({
   onSubmit,
   getRef,
   validate,
+  validationSchema,
 }: ReaformProps<I>) => {
   const [values, setValues] = useState({} as Record<keyof I, any>);
   const [validation, setValidation] = useState({} as Record<keyof I, string | undefined>);
@@ -58,7 +59,7 @@ export const Reaform = <I extends Record<string, any>>({
     });
   };
 
-  const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const onInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const name = e?.target?.name;
 
     if (!name) {
@@ -81,6 +82,22 @@ export const Reaform = <I extends Record<string, any>>({
       );
 
       setValid(isValid);
+    } else if (validationSchema && validationSchema.isValid) {
+      console.log('validating', newValues);
+
+      try {
+        const valid = await validationSchema.isValid(newValues);
+
+        if (valid) {
+          console.log('valid')
+          setValid(true);
+        } else{
+          console.log('invalid 1', valid)
+        }
+      } catch (err) {
+        console.log('invalid 2', err)
+        setValid(false);
+      }
     }
   };
 
